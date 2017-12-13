@@ -235,12 +235,11 @@ class NodesCmd(KvStoreCmd):
         def _parse_nodes(rows, value):
             prefix_db = deserialize_thrift_object(value.value,
                                                   lsdb_types.PrefixDatabase)
-
-            prefix_strs = utils.sprint_prefixes_db_full(prefix_db, True)
-
             marker = '* ' if prefix_db.thisNodeName == host_id else '> '
             row = ["{}{}".format(marker, prefix_db.thisNodeName)]
-            row.extend(prefix_strs)
+            loopback_prefixes = [p.prefix for p in prefix_db.prefixEntries \
+                     if p.type == lsdb_types.PrefixType.LOOPBACK]
+            row.extend([utils.sprint_prefix(p) for p in loopback_prefixes])
             rows.append(row)
 
         rows = []
@@ -472,8 +471,12 @@ class TopologyCmd(KvStoreCmd):
         try:
             import matplotlib.pyplot as plt
             import networkx as nx
-        except Exception:
-            print("matplotlib and networkx needed for drawing. Skipping")
+        except ImportError:
+            print('Drawing topology requires `matplotlib` and `networkx` '
+                  'libraries. You can install them with following command and '
+                  'retry. \n'
+                  '  pip install matplotlib\n'
+                  '  pip install networkx')
             sys.exit(1)
 
         publication = self.client.dump_all_with_prefix(Consts.ADJ_DB_MARKER)
