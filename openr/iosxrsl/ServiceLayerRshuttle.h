@@ -116,6 +116,13 @@ public:
   void doAddUnicastRouteV6(
       const folly::CIDRNetwork& prefix, const NextHops& nextHops);
 
+  void doAddUnicastRouteBatch(
+      const folly::CIDRNetwork& prefix, const NextHops& nextHops);
+  void doAddUnicastRouteV4Batch(
+      const folly::CIDRNetwork& prefix, const NextHops& nextHops);
+  void doAddUnicastRouteV6Batch(
+      const folly::CIDRNetwork& prefix, const NextHops& nextHops);
+
   void doDeleteUnicastRoute(
       const folly::CIDRNetwork& prefix);
   void deleteUnicastRouteV4(

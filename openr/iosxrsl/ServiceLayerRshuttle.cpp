@@ -656,15 +656,13 @@ IosxrslRshuttle::doSyncRoutes(UnicastRoutes newRouteDb) {
   auto result  = iosxrslRoute_->routev4Op(service_layer::SL_OBJOP_UPDATE);
   if (!result) {
     throw IosxrslException(folly::sformat(
-        "Could not add Route to: {}",
-        folly::IPAddress::networkToString(prefix)));
+        "Could not add IPv4 Route batch"));
   }
 
-  auto result  = iosxrslRoute_->routev6Op(service_layer::SL_OBJOP_UPDATE);
+  result  = iosxrslRoute_->routev6Op(service_layer::SL_OBJOP_UPDATE);
   if (!result) {
     throw IosxrslException(folly::sformat(
-        "Could not add Route to: {}",
-        folly::IPAddress::networkToString(prefix)));
+        "Could not add IPv6 Route batch"));
   } 
 
 }
