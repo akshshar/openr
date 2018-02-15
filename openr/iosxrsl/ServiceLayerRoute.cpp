@@ -208,13 +208,13 @@ IosxrslRoute::routev4Op(service_layer::SLObjectOp routeOp,
     status = stub_->SLRoutev4Op(&context, routev4_msg, &routev4_msg_resp);
 
     if (status.ok()) {
-        VLOG(1) << "RPC call was successful, checking response...";
+        VLOG(2) << "RPC call was successful, checking response...";
 
 
         if (routev4_msg_resp.statussummary().status() ==
                service_layer::SLErrorStatus_SLErrno_SL_SUCCESS) {
 
-            VLOG(1) << "IPv4 Route Operation:"<< route_op << " Successful";
+            VLOG(2) << "IPv4 Route Operation:"<< route_op << " Successful";
         } else {
             LOG(ERROR) << "IPv4 Route Operation Unsuccessful!"
                        << "Error code for IPv4 Route Operation:" 
@@ -439,7 +439,7 @@ IosxrslRoute::insertUpdateBatchV4(std::string prefix,
                                    << nextHopIf << "\n";
                         return false;
                     }
-                    VLOG(1) << "Path "
+                    VLOG(2) << "Path "
                             << "\n  Prefix: " << prefix << "/" << prefixLen
                             << "\n  NextHop Address: " << nextHopAddress
                             << "\n  NextHop Interface: " << nextHopIf
@@ -452,7 +452,7 @@ IosxrslRoute::insertUpdateBatchV4(std::string prefix,
                         LOG(ERROR) << "Path not found for delete operation";
                         return false;
                     } else { 
-                        VLOG(1) << "Path "
+                        VLOG(2) << "Path "
                                 << "\n  Prefix: " << prefix << "/" << prefixLen
                                 << "\n  NextHop Address: " << nextHopAddress
                                 << "\n  NextHop Interface: " << nextHopIf
@@ -483,7 +483,7 @@ IosxrslRoute::insertUpdateBatchV4(std::string prefix,
                         return false;
                     }
 
-                    VLOG(1) << "Path "
+                    VLOG(2) << "Path "
                             << "\n  Prefix: " << prefix << "/" << prefixLen
                             << "\n  NextHop Address: " << nextHopAddress
                             << "\n  NextHop Interface: " << nextHopIf
@@ -567,7 +567,7 @@ IosxrslRoute::getPrefixPathsV4(service_layer::SLRoutev4& route,
     status = stub_->SLRoutev4Get(&context, routev4_get_msg, &routev4_get_msg_resp);
 
     if (status.ok()) {
-         VLOG(1) << "RPC call was successful, checking response...";
+         VLOG(2) << "RPC call was successful, checking response...";
 
 
         auto slerr_status =
@@ -577,7 +577,7 @@ IosxrslRoute::getPrefixPathsV4(service_layer::SLRoutev4& route,
         if (slerr_status ==
                service_layer::SLErrorStatus_SLErrno_SL_SUCCESS) {
 
-            VLOG(1) << "IPv4 Route GET Operation successful";
+            VLOG(2) << "IPv4 Route GET Operation successful";
 
             // We've only requested one entry for prefix in a particular vrf
             // If the returned eof flag is set, then not even one entry was returned,
@@ -588,7 +588,7 @@ IosxrslRoute::getPrefixPathsV4(service_layer::SLRoutev4& route,
             } else {
                 // Successful return and we should get only one entry back
                 if (routev4_get_msg_resp.entries_size() == 1) {
-                    VLOG(1) << "Received the route from RIB";
+                    VLOG(2) << "Received the route from RIB";
                     route = routev4_get_msg_resp.entries(0);
                     return true;
                 } else {
@@ -790,13 +790,13 @@ IosxrslRoute::routev6Op(service_layer::SLObjectOp routeOp,
     status = stub_->SLRoutev6Op(&context, routev6_msg, &routev6_msg_resp);
 
     if (status.ok()) {
-         VLOG(1) << "RPC call was successful, checking response...";
+         VLOG(2) << "RPC call was successful, checking response...";
 
 
         if (routev6_msg_resp.statussummary().status() ==
                service_layer::SLErrorStatus_SLErrno_SL_SUCCESS) {
 
-            VLOG(1) << "IPv6 Route Operation:"<< route_op << " Successful";
+            VLOG(2) << "IPv6 Route Operation:"<< route_op << " Successful";
         } else {
             LOG(ERROR) << "Error code for IPv6 Route Operation:" 
                        << route_op 
@@ -1014,7 +1014,7 @@ IosxrslRoute::insertUpdateBatchV6(std::string prefix,
                         return false;
                     }
 
-                    VLOG(1) << "Path "
+                    VLOG(2) << "Path "
                             << "\n  Prefix: " << prefix << "/" << prefixLen
                             << "\n  NextHop Address: " << nextHopAddress
                             << "\n  NextHop Interface: " << nextHopIf
@@ -1027,7 +1027,7 @@ IosxrslRoute::insertUpdateBatchV6(std::string prefix,
                         LOG(ERROR) << "Path not found for delete operation";
                         return false;
                     } else {
-                        VLOG(1) << "Path "
+                        VLOG(2) << "Path "
                                 << "\n  Prefix: " << prefix << "/" << prefixLen
                                 << "\n  NextHop Address: " << nextHopAddress
                                 << "\n  NextHop Interface: " << nextHopIf
@@ -1058,7 +1058,7 @@ IosxrslRoute::insertUpdateBatchV6(std::string prefix,
                                    << nextHopIf << "\n";
                         return false;
                     }
-                    VLOG(1) << "Path "
+                    VLOG(2) << "Path "
                             << "\n  Prefix: " << prefix << "/" << prefixLen
                             << "\n  NextHop Address: " << nextHopAddress
                             << "\n  NextHop Interface: " << nextHopIf
@@ -1141,7 +1141,7 @@ IosxrslRoute::getPrefixPathsV6(service_layer::SLRoutev6& route,
     status = stub_->SLRoutev6Get(&context, routev6_get_msg, &routev6_get_msg_resp);
 
     if (status.ok()) {
-         VLOG(1) << "RPC call was successful, checking response...";
+         VLOG(2) << "RPC call was successful, checking response...";
 
 
         auto slerr_status =
@@ -1151,7 +1151,7 @@ IosxrslRoute::getPrefixPathsV6(service_layer::SLRoutev6& route,
         if (slerr_status ==
                service_layer::SLErrorStatus_SLErrno_SL_SUCCESS) {
 
-            VLOG(1) << "IPv6 Route GET Operation successful";
+            VLOG(2) << "IPv6 Route GET Operation successful";
 
             // We've only requested one entry for prefix in a particular vrf
             // If the returned eof flag is set, then not even one entry was returned,
@@ -1162,7 +1162,7 @@ IosxrslRoute::getPrefixPathsV6(service_layer::SLRoutev6& route,
             } else {
                 // Successful return and we should get only one entry back
                 if (routev6_get_msg_resp.entries_size() == 1) {
-                    VLOG(1) << "Received the route from RIB";
+                    VLOG(2) << "Received the route from RIB";
                     route = routev6_get_msg_resp.entries(0);
                     return true;
                 } else {
@@ -1386,13 +1386,13 @@ IosxrslVrf::vrfOpv4(service_layer::SLRegOp vrfOp)
     status = stub_->SLRoutev4VrfRegOp(&context, vrf_msg, &vrf_msg_resp);
 
     if (status.ok()) {
-        VLOG(1) << "RPC call was successful, checking response...";
+        VLOG(2) << "RPC call was successful, checking response...";
 
 
         if (vrf_msg_resp.statussummary().status() ==
                service_layer::SLErrorStatus_SLErrno_SL_SUCCESS) {
 
-            VLOG(1) << "IPv4 Vrf Operation:"<< vrfOp << " Successful";
+            VLOG(2) << "IPv4 Vrf Operation:"<< vrfOp << " Successful";
             return true;
         } else {
             LOG(ERROR) << "Error code for VRF Operation:" 
@@ -1465,10 +1465,10 @@ IosxrslVrf::vrfOpv6(service_layer::SLRegOp vrfOp)
     status = stub_->SLRoutev6VrfRegOp(&context, vrf_msg, &vrf_msg_resp);
 
     if (status.ok()) {
-        VLOG(1) << "RPC call was successful, checking response...";
+        VLOG(2) << "RPC call was successful, checking response...";
         if (vrf_msg_resp.statussummary().status() ==
                service_layer::SLErrorStatus_SLErrno_SL_SUCCESS) {
-            VLOG(1) << "IPv6 Vrf Operation: "<< vrfOp << " successful";
+            VLOG(2) << "IPv6 Vrf Operation: "<< vrfOp << " successful";
             return true;
         } else {
             LOG(ERROR) << "Error code for VRF Operation:" 
