@@ -35,7 +35,6 @@
 #include <openr/kvstore/KvStoreClient.h>
 #include <openr/link-monitor/LinkMonitor.h>
 #include <openr/platform/NetlinkFibHandler.h>
-#include <openr/platform/IosxrslFibHandler.h>
 #include <openr/platform/NetlinkSystemHandler.h>
 #include <openr/platform/PlatformPublisher.h>
 #include <openr/prefix-manager/PrefixManager.h>
