@@ -144,7 +144,6 @@ exec ${OPENR} \
   --spark_keepalive_time_s=${SPARK_KEEPALIVE_TIME_S} \
   --spark_fastinit_keepalive_time_ms=${SPARK_FASTINIT_KEEPALIVE_TIME_MS} \
   --enable_netlink_fib_handler=${ENABLE_NETLINK_FIB_HANDLER} \
-  --enable_iosxrsl_fib_handler=${ENABLE_IOSXRSL_FIB_HANDLER} \
   --enable_netlink_system_handler=${ENABLE_NETLINK_SYSTEM_HANDLER} \
   --decision_debounce_min_ms=${DECISION_DEBOUNCE_MIN_MS} \
   --decision_debounce_max_ms=${DECISION_DEBOUNCE_MAX_MS} \
@@ -153,7 +152,5 @@ exec ${OPENR} \
   --logbufsecs=0 \
   --max_log_size=1 \
   --v=${VERBOSITY} \
-  --iosxr_slapi_port=${IOSXR_SLAPI_PORT} \
-  --iosxr_slapi_ip=${IOSXR_SLAPI_IP} \
   --fib_agent_port=${FIB_HANDLER_PORT}
   "$@"

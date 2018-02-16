@@ -260,11 +260,7 @@ add_library(openrlib
   nl/NetlinkIfSocket.cpp
   nl/NetlinkRouteSocket.cpp
   nl/NetlinkSubscriber.cpp
-  iosxrsl/ServiceLayerAsyncInit.cpp
-  iosxrsl/ServiceLayerRoute.cpp
-  iosxrsl/ServiceLayerRshuttle.cpp
   platform/NetlinkFibHandler.cpp
-  platform/IosxrslFibHandler.cpp
   platform/NetlinkSystemHandler.cpp
   platform/PlatformPublisher.cpp
   prefix-manager/PrefixManager.cpp
@@ -320,10 +316,6 @@ target_link_libraries(openrlib
   -lcrypto
   -I/usr/local/include/
   -L/usr/local/lib 
-  -lgrpc++_unsecure 
-  -lgrpc 
-  -lprotobuf
-  -liosxrsl 
 )
 
 install(TARGETS
@@ -468,14 +460,6 @@ install(FILES
   DESTINATION include/openr/nl
 )
 
-
-install(FILES
-  iosxrsl/ServiceLayerAsyncInit.h
-  iosxrsl/ServiceLayerRoute.h
-  iosxrsl/ServiceLayerRshuttle.h
-  iosxrsl/ServiceLayerException.h
-  DESTINATION include/openr/iosxrsl
-)
 
 install(FILES
   platform/NetlinkSystemHandler.h
