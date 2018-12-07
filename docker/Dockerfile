@@ -1,5 +1,4 @@
-FROM ubuntu:16.04 
-
+FROM ubuntu:16.04
 
 RUN apt-get update && apt-get install -y autoconf automake libtool curl make g++ unzip git python-pip python-dev && git clone https://github.com/google/protobuf.git ~/protobuf && \
             cd ~/protobuf && \
@@ -8,7 +7,7 @@ RUN apt-get update && apt-get install -y autoconf automake libtool curl make g++
             ./configure && \
             make && \
             make install &&\
-            ldconfig && make clean && cd ~/ && rm -r ~/protobuf 
+            ldconfig && make clean && cd ~/ && rm -r ~/protobuf
 
 RUN git clone https://github.com/grpc/grpc.git ~/grpc && cd ~/grpc && \
             git checkout 80893242c1ee929d19e6bec5dc19a1515cd8dd81 && \
@@ -20,6 +19,11 @@ RUN apt-get install -y pkg-config && git clone https://wwwin-github.cisco.com/ak
            cd ~/service-layer-objmodel/grpc/cpp && \
            ./build_libiosxrsl.sh &&  \
            cd ~/ && rm -r ~/service-layer-objmodel
+
+RUN apt-get install -y pkg-config && git clone -b gribi-nanog https://wwwin-github.cisco.com/ios-xr/service-layer-objmodel.git ~/gribi-nanog && \
+           cd ~/gribi-nanog/grpc/gribi && \
+           ./build_libgribi.sh &&  \
+           cd ~/ && rm -r ~/gribi-nanog
 
 RUN git clone https://github.com/akshshar/openr.git /root/openr && cd /root/openr/ && git checkout openr20171212 && cd /root/openr/build && ./build_openr_dependencies.sh
 
