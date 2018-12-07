@@ -263,8 +263,11 @@ add_library(openrlib
   iosxrsl/ServiceLayerAsyncInit.cpp
   iosxrsl/ServiceLayerRoute.cpp
   iosxrsl/ServiceLayerRshuttle.cpp
+  gribi/GribiRoute.cpp
+  gribi/GribiRshuttle.cpp
   platform/NetlinkFibHandler.cpp
   platform/IosxrslFibHandler.cpp
+  platform/GribiFibHandler.cpp
   platform/NetlinkSystemHandler.cpp
   platform/PlatformPublisher.cpp
   prefix-manager/PrefixManager.cpp
@@ -319,11 +322,12 @@ target_link_libraries(openrlib
   ${NL3}
   -lcrypto
   -I/usr/local/include/
-  -L/usr/local/lib 
-  -lgrpc++_unsecure 
-  -lgrpc 
+  -L/usr/local/lib
+  -lgrpc++_unsecure
+  -lgrpc
   -lprotobuf
-  -liosxrsl 
+  -liosxrsl
+  -liosxrgribi
 )
 
 install(TARGETS
@@ -475,6 +479,13 @@ install(FILES
   iosxrsl/ServiceLayerRshuttle.h
   iosxrsl/ServiceLayerException.h
   DESTINATION include/openr/iosxrsl
+)
+
+install(FILES
+  gribi/GribiRoute.h
+  gribi/GribiRshuttle.h
+  gribi/GribiException.h
+  DESTINATION include/openr/gribi
 )
 
 install(FILES
