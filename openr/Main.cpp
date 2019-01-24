@@ -36,6 +36,7 @@
 #include <openr/link-monitor/LinkMonitor.h>
 #include <openr/platform/NetlinkFibHandler.h>
 #include <openr/platform/IosxrslFibHandler.h>
+#include <openr/platform/GribiFibHandler.h>
 #include <openr/platform/NetlinkSystemHandler.h>
 #include <openr/platform/PlatformPublisher.h>
 #include <openr/prefix-manager/PrefixManager.h>
@@ -262,6 +263,18 @@ DEFINE_bool(
     enable_iosxrsl_system_handler,
     false,
     "If set, iosxrsl system (interface, bfd) handler will be started for route programming.");
+DEFINE_string(
+    gribi_ip,
+    "10.0.2.2",        //EMILY ADDED
+    "IP address of gRIBI gRPC server running in IOS-XR for RIB programming");
+DEFINE_string(
+    gribi_port,
+    "57777",
+    "gRPC TCP port for IOS-XR gRIBI");
+DEFINE_bool(
+    enable_gribi_fib_handler,
+    false,
+    "If set, gribi RIB handler will be started for route programming.");
 
 using namespace fbzmq;
 using namespace openr;
@@ -426,8 +439,8 @@ main(int argc, char** argv) {
       std::vector<VrfData> vrf_set;
       vrf_set.push_back(VrfData("default", kAqRouteProtoId, 500));
 
-      auto fibHandler = 
-      std::make_shared<IosxrslFibHandler>(&mainEventLoop, 
+      auto fibHandler =
+      std::make_shared<IosxrslFibHandler>(&mainEventLoop,
                                           vrf_set,
                                           channel);
       fibHandler->setVrfContext("default");
@@ -443,6 +456,41 @@ main(int argc, char** argv) {
     allThreads.emplace_back(std::move(fibThriftThread));
   }
 
+  // Start GribiFibHandler if specified
+  std::unique_ptr<apache::thrift::ThriftServer> gribiFibServer;
+  LOG(INFO) << "#######################";
+  LOG(INFO) << "FLAGS_enable_gribi_fib_handler: " << FLAGS_enable_gribi_fib_handler;
+  LOG(INFO) << "#######################";
+
+  if (FLAGS_enable_gribi_fib_handler) {
+    gribiFibServer = std::make_unique<apache::thrift::ThriftServer>();
+    auto fibThriftThread = std::thread([&gribiFibServer, &mainEventLoop]() {
+      folly::setThreadName("gribiFibService");
+      LOG(INFO) << "EMILY: GRIBI CREATE CHANNEL";
+      auto channel = grpc::CreateChannel(
+                         folly::sformat("{}:{}",
+                                        FLAGS_gribi_ip,
+                                        FLAGS_gribi_port),
+                         grpc::InsecureChannelCredentials());
+      std::vector<VrfData> vrf_set;
+      vrf_set.push_back(VrfData("default", kAqRouteProtoId, 500));
+
+      auto fibHandler =
+      std::make_shared<GribiFibHandler>(&mainEventLoop,
+                                        //vrf_set,
+                                        channel);
+      fibHandler->setVrfContext("default");
+      gribiFibServer->setNWorkerThreads(1);
+      gribiFibServer->setNPoolThreads(1);
+      gribiFibServer->setPort(FLAGS_fib_agent_port);
+      gribiFibServer->setInterface(fibHandler);
+
+      LOG(INFO) << "Starting GRIBI Fib server...";
+      gribiFibServer->serve();
+      LOG(INFO) << "GRIBI Fib server got stopped.";
+    });
+    allThreads.emplace_back(std::move(fibThriftThread));
+  }
 
   folly::Optional<KeyPair> keyPair;
   if (FLAGS_enable_auth) {
