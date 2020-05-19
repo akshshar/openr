@@ -325,13 +325,15 @@ IosxrslRshuttle::iosxrIfName(std::string ifname)
         FORTY_GIG,
         TWENTY_FIVE_GIG,
         HUNDRED_GIG,
+        FOURHUNDRED_GIG,
         MGMT
     };
 
     std::map<std::string, IfNameTypes> 
     iosxrLnxIfname = {{"Gi",GIG}, {"Tg", TEN_GIG},
                       {"Fg",FORTY_GIG}, {"Tf", TWENTY_FIVE_GIG},
-                      {"Hg",HUNDRED_GIG}, {"Mg", MGMT}};
+                      {"Hg",HUNDRED_GIG}, {"FH",FOURHUNDRED_GIG},
+                      {"Mg", MGMT}};
 
     auto ifnamePrefix = "";
 
@@ -356,6 +358,9 @@ IosxrslRshuttle::iosxrIfName(std::string ifname)
         break;
     case HUNDRED_GIG:
         ifnamePrefix = "HundredGigE";
+        break;
+    case FOURHUNDRED_GIG:
+        ifnamePrefix = "FourHundredGigE";
         break;
     case MGMT:
         ifnamePrefix = "MgmtEth";
