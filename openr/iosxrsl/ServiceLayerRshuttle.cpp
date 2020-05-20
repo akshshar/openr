@@ -28,6 +28,8 @@ namespace openr {
 
 std::string grpc_connectivity_state_name(grpc_connectivity_state state) {
   switch (state) {
+    case GRPC_CHANNEL_INIT:
+      return "INIT";
     case GRPC_CHANNEL_IDLE:
       return "IDLE";
     case GRPC_CHANNEL_CONNECTING:
